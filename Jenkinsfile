@@ -1,4 +1,4 @@
-node {
+node ('jenkins-maven'){
   try{
     stage 'checkout project'
     checkout scm
