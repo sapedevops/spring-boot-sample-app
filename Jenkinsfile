@@ -1,24 +1,25 @@
 node ('jenkins-maven'){
   try{
     stage 'checkout project'
+    container(name:'maven'){
     checkout scm
-
-    stage 'check env'
+  
+//    stage 'check env'
     sh "mvn -v"
     sh "java -version"
 
-    stage 'test'
+  //  stage 'test'
     sh "mvn test"
 
-    stage 'package'
+    //stage 'package'
     sh "mvn package"
 
-    stage 'report'
+    //stage 'report'
     step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
-    stage 'Artifact'
+//    stage 'Artifact'
     step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
-
+    }
   }catch(e){
     throw e;
   }
