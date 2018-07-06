@@ -39,6 +39,8 @@ pipeline {
 
             }
         }
+      
+        /*
         stage('Integration tests') {
             // Run integration test
             steps {
@@ -52,11 +54,12 @@ pipeline {
                     }
 
                 }
+                */
                 // cucumber reports collection
-                cucumber buildStatus: null, fileIncludePattern: '**/cucumber.json', jsonReportDirectory: 'target', sortingMethod: 'ALPHABETICAL'
-            }
-        }
-        stage('Sonar scan execution') {
+                //cucumber buildStatus: null, fileIncludePattern: '**/cucumber.json', jsonReportDirectory: 'target', sortingMethod: 'ALPHABETICAL'
+//            }
+ //       }
+       /* stage('Sonar scan execution') {
             // Run the sonar scan
             steps {
                 script {
@@ -83,6 +86,7 @@ pipeline {
                 }
             }
         }
+*/
         stage('Development deploy approval and deployment') {
             steps {
                 script {
@@ -118,9 +122,9 @@ pipeline {
                     if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
                         timeout(time: 1, unit: 'MINUTES') {
                             script {
-                                def mvnHome = tool 'Maven 3.3.9'
+                                //def mvnHome = tool 'Maven 3.3.9'
                                 //NOTE : if u change the sanity test class name , change it here as well
-                                sh "'${mvnHome}/bin/mvn' -Dtest=ApplicationSanityCheck_ITT surefire:test"
+                                sh "mvn -Dtest=ApplicationSanityCheck_ITT surefire:test"
                             }
 
                         }
@@ -128,7 +132,7 @@ pipeline {
                 }
             }
         }
-        stage('Release and publish artifact') {
+       /* stage('Release and publish artifact') {
             when {
                 // check if branch is master
                 branch 'master'
@@ -136,7 +140,7 @@ pipeline {
             steps {
                 // create the release version then create a tage with it , then push to nexus releases the released jar
                 script {
-                    def mvnHome = tool 'Maven 3.3.9' //
+                    //def mvnHome = tool 'Maven 3.3.9' //
                     if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
                         def v = getReleaseVersion()
                         releasedVersion = v;
@@ -156,7 +160,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
         stage('Deploy to Acceptance') {
             when {
                 // check if branch is master
@@ -201,9 +205,9 @@ pipeline {
                         timeout(time: 1, unit: 'MINUTES') {
 
                             script {
-                                def mvnHome = tool 'Maven 3.3.9'
+                                //def mvnHome = tool 'Maven 3.3.9'
                                 // NOTE : if you change the test class name change it here as well
-                                sh "'${mvnHome}/bin/mvn' -Dtest=ApplicationE2E surefire:test"
+                                sh "mvn -Dtest=ApplicationE2E surefire:test"
                             }
 
                         }
